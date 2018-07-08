@@ -39,14 +39,12 @@ class DurationInput extends Component {
   }
   render() {
     return (
-      <p>My break today was 
-        <input 
+      <p>My break today was <input 
           type="text"  
           pattern="[0-9]{1,2}[:][0-9]{2}"
           value={this.props.duration}
           onChange={this.handleBreakDurationChange}
-        /> 
-        long.
+        /> long
       </p>
     );
   }
@@ -63,7 +61,7 @@ class TimeInputArea extends Component {
       <div>
         <TimeInput 
           name="startTime"
-          text="I came to work at " 
+          text="Today I came to work at " 
           time={this.props.startTime}
           onTimeChange={this.props.onTimeChange}
         />
@@ -84,7 +82,7 @@ class TimeInputArea extends Component {
 
 // Displays how long you worked
 function TimeOutput(props) {
-  return <p>You worked <strong>{props.timeWorked}</strong> hours today</p>;
+  return <p className="output">You worked <strong>{props.timeWorked}</strong> hours today</p>;
 }
 
 // Component which keeps the state and does the work time calculation
@@ -92,9 +90,9 @@ class WorkDurationCalculator extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startTime: "10:00",
-      endTime: "18:00",
-      breakDuration: "1:30"
+      startTime: "00:00",
+      endTime: "00:00",
+      breakDuration: "00:00"
     }
     this.handleTimeChange = this.handleTimeChange.bind(this);
     this.handleBreakDurationChange = this.handleBreakDurationChange.bind(this);
@@ -153,7 +151,8 @@ class WorkDurationCalculator extends Component {
   render() {
     console.log(this.calculateWorkingHours())
     return (
-      <div>
+      <div className="calculator">
+        <h1>Calculate how long you worked today</h1>
         <TimeInputArea 
           startTime={this.state.startTime} 
           endTime={this.state.endTime} 
