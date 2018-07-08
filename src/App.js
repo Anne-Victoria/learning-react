@@ -5,14 +5,22 @@ import './App.css';
 class TimeInput extends Component {
   constructor(props) {
     super(props);
+    this.handleTimeChange = this.handleTimeChange.bind(this);
   }
+
+  handleTimeChange(e) {
+    this.props.onTimeChange(e.target.value, e.currentTarget.className);
+  }
+
   render() {
     return (
       <p>{this.props.text} 
         <input 
+          className={this.props.name}
           type="text"  
           pattern="[0-9]{1,2}[:][0-9]{2}"
           value={this.props.time}
+          onChange={this.handleTimeChange}
         />
       </p>
     );
@@ -39,14 +47,39 @@ class DurationInput extends Component {
 }
 
 // Creates elements for entering start and end time and pause duration
-function TimeInputArea(props) {
-  return (
-    <div>
-      <TimeInput text="I came to work at " time={props.startTime}/>
-      <TimeInput text="I'm leaving work at " time={props.endTime}/>
-      <DurationInput duration={props.breakDuration}/>
-    </div>
-  );
+class TimeInputArea extends Component {
+  constructor(props) {
+    super(props);
+    //this.handleTimeChange = this.handleTimeChange.bind(this);
+    //this.handleBreakDurationChange = this.handleBreakDurationChange.bind(this);
+  }
+
+  // handleTimeChange(e) {
+  //   this.props.onTimeChange(e.target.value, e.currentTarget.className);
+  // }
+
+  render() {
+    return (
+      <div>
+        <TimeInput 
+          name="startTime"
+          text="I came to work at " 
+          time={this.props.startTime}
+          onTimeChange={this.props.onTimeChange}
+        />
+        <TimeInput 
+          name="endTime"
+          text="I'm leaving work at " 
+          time={this.props.endTime}
+          onTimeChange={this.props.onTimeChange} 
+        />
+        <DurationInput 
+          duration={this.props.breakDuration} 
+          onBreakDurationChange={this.props.handleBreakDurationChange}
+        />
+      </div>
+    );
+  }
 }
 
 // Displays how long you worked
@@ -63,6 +96,28 @@ class WorkDurationCalculator extends Component {
       endTime: "18:00",
       breakDuration: "1:30"
     }
+    this.handleTimeChange = this.handleTimeChange.bind(this);
+    this.handleBreakDurationChange = this.handleBreakDurationChange.bind(this);
+  }
+
+  handleTimeChange(time, timeType) {
+    if (timeType === "startTime") {
+      this.setState({
+        startTime: time
+      });
+    } else if (timeType === "endTime") {
+      this.setState({
+        endTime: time
+      });
+    }
+
+    
+  }
+
+  handleBreakDurationChange(breakDuration) {
+    this.setState({
+      breakDuration: breakDuration
+    });
   }
 
   calculateWorkingHours() {
@@ -102,7 +157,9 @@ class WorkDurationCalculator extends Component {
         <TimeInputArea 
           startTime={this.state.startTime} 
           endTime={this.state.endTime} 
-          breakDuration={this.state.breakDuration} 
+          breakDuration={this.state.breakDuration}
+          onTimeChange={this.handleTimeChange}
+          onBreakDurationChange={this.handleBreakDurationChange}
         />
         <TimeOutput timeWorked={this.calculateWorkingHours()}/>
       </div>
