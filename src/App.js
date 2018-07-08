@@ -8,7 +8,7 @@ function TimeInput(props) {
       <input 
         type="text"  
         pattern="[0-9]{1,2}[:][0-9]{2}"
-        value={props.value}
+        value={props.time}
       />
     </p>
   );
@@ -16,23 +16,32 @@ function TimeInput(props) {
 
 // Component for entering how long your breaks were
 function DurationInput(props) {
-  return <p>My break today was XX:XX</p>;
+  return (
+    <p>My break today was 
+      <input 
+        type="text"  
+        pattern="[0-9]{1,2}[:][0-9]{2}"
+        value={props.duration}
+      /> 
+      long.
+    </p>
+  );
 }
 
 // Creates elements for entering start and end time and pause duration
 function TimeInputArea(props) {
   return (
     <div>
-      <TimeInput text="I came to work at " value="00:00"/>
-      <TimeInput text="I'm leaving work at " value="00:00"/>
-      <DurationInput />
+      <TimeInput text="I came to work at " time={props.startTime}/>
+      <TimeInput text="I'm leaving work at " time={props.endTime}/>
+      <DurationInput duration={props.breakDuration}/>
     </div>
   );
 }
 
 // Displays how long you worked
 function TimeOutput(props) {
-  return <p>You worked XX.X hours today</p>;
+  return <p>You worked <strong>{props.timeWorked}</strong> hours today</p>;
 }
 
 // Component which keeps the state
@@ -40,8 +49,8 @@ class WorkDurationCalculator extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startTime: "12:00",
-      endTime: "18:30",
+      startTime: "10:00",
+      endTime: "18:00",
       breakDuration: "1:30"
     }
   }
@@ -69,11 +78,11 @@ class WorkDurationCalculator extends Component {
     let diff = endDate.getTime() - startDate.getTime();
     let workHours = Math.floor(diff / 1000 / 60 / 60);
     diff -= workHours * 1000 * 60 * 60;
-    const workMinutes = Math.floor(diff / 1000 / 60);
+    const workMinutes = Math.floor(Math.floor(diff / 1000 / 60) / 60 * 10);
     if (workHours < 0) {
       workHours += 24;
     }
-    return workHours + ":" + (workMinutes <= 9 ? "0" : "") + workMinutes;
+    return workHours + "." + workMinutes;
   }
 
   render() {
@@ -85,7 +94,7 @@ class WorkDurationCalculator extends Component {
           endTime={this.state.endTime} 
           breakDuration={this.state.breakDuration} 
         />
-        <TimeOutput />
+        <TimeOutput timeWorked={this.calculateWorkingHours()}/>
       </div>
     );
   }
