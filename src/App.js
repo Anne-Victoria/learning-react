@@ -31,6 +31,11 @@ class TimeInput extends Component {
 class DurationInput extends Component {
   constructor(props) {
     super(props);
+    this.handleBreakDurationChange = this.handleBreakDurationChange.bind(this);
+  }
+
+  handleBreakDurationChange(e) {
+    this.props.onBreakDurationChange(e.target.value);
   }
   render() {
     return (
@@ -39,6 +44,7 @@ class DurationInput extends Component {
           type="text"  
           pattern="[0-9]{1,2}[:][0-9]{2}"
           value={this.props.duration}
+          onChange={this.handleBreakDurationChange}
         /> 
         long.
       </p>
@@ -50,13 +56,7 @@ class DurationInput extends Component {
 class TimeInputArea extends Component {
   constructor(props) {
     super(props);
-    //this.handleTimeChange = this.handleTimeChange.bind(this);
-    //this.handleBreakDurationChange = this.handleBreakDurationChange.bind(this);
   }
-
-  // handleTimeChange(e) {
-  //   this.props.onTimeChange(e.target.value, e.currentTarget.className);
-  // }
 
   render() {
     return (
@@ -75,7 +75,7 @@ class TimeInputArea extends Component {
         />
         <DurationInput 
           duration={this.props.breakDuration} 
-          onBreakDurationChange={this.props.handleBreakDurationChange}
+          onBreakDurationChange={this.props.onBreakDurationChange}
         />
       </div>
     );
