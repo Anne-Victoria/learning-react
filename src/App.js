@@ -2,30 +2,40 @@ import React, { Component } from 'react';
 import './App.css';
 
 // Component for entering when you came or left
-function TimeInput(props) {
-  return (
-    <p>{props.text} 
-      <input 
-        type="text"  
-        pattern="[0-9]{1,2}[:][0-9]{2}"
-        value={props.time}
-      />
-    </p>
-  );
+class TimeInput extends Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <p>{this.props.text} 
+        <input 
+          type="text"  
+          pattern="[0-9]{1,2}[:][0-9]{2}"
+          value={this.props.time}
+        />
+      </p>
+    );
+  }
 }
 
 // Component for entering how long your breaks were
-function DurationInput(props) {
-  return (
-    <p>My break today was 
-      <input 
-        type="text"  
-        pattern="[0-9]{1,2}[:][0-9]{2}"
-        value={props.duration}
-      /> 
-      long.
-    </p>
-  );
+class DurationInput extends Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <p>My break today was 
+        <input 
+          type="text"  
+          pattern="[0-9]{1,2}[:][0-9]{2}"
+          value={this.props.duration}
+        /> 
+        long.
+      </p>
+    );
+  }
 }
 
 // Creates elements for entering start and end time and pause duration
@@ -44,7 +54,7 @@ function TimeOutput(props) {
   return <p>You worked <strong>{props.timeWorked}</strong> hours today</p>;
 }
 
-// Component which keeps the state
+// Component which keeps the state and does the work time calculation
 class WorkDurationCalculator extends Component {
   constructor(props) {
     super(props);
